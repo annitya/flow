@@ -30,17 +30,9 @@
     <!-- Add your project components here -->
   </project-components>
 
-  <actions>
-      <group id="flow-group" text="Flow" description="Enter the state of flow." popup="true">
-          <add-to-group group-id="ToolsMenu" anchor="last" />
-          <action id="flow-open" class="FlowPlugin" text="Start" description="Opens the flow diagram." />
-      </group>
-  </actions>
-
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <toolWindow id="Flow" anchor="bottom" factoryClass="FlowPlugin" />
   </extensions>
-
 
   <depends>com.jetbrains.php</depends>
   <depends>com.intellij.modules.platform</depends>

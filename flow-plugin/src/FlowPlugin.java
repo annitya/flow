@@ -1,14 +1,46 @@
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.content.Content;
+import com.intellij.ui.content.ContentFactory;
 
-public class FlowPlugin extends AnAction
+import javax.swing.*;
+
+public class FlowPlugin implements ToolWindowFactory
 {
-    public FlowPlugin() {}
+    protected FlowModel model;
 
-    public void actionPerformed(AnActionEvent event)
+    private JPanel contentPane;
+    private JTextPane graphics;
+
+    public void createToolWindowContent(Project project, ToolWindow toolWindow)
     {
-        FlowModel model = new FlowModel(event);
-        FlowGui gui = new FlowGui(model);
-        gui.render();
+        model = new FlowModel(project);
+        model.getEditor().getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void beforeDocumentChange(DocumentEvent event) {}
+            @Override
+            public void documentChanged(DocumentEvent event) {
+                model.updateData();
+                setContentText();
+            }
+        });
+
+        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        Content content = contentFactory.createContent(contentPane, "", false);
+        toolWindow.getContentManager().addContent(content);
+    }
+
+    protected void setContentText()
+    {
+        String displayedText = "";
+
+        for (FlowGuiElement element : model.getElements()) {
+            displayedText += element.toString() + "\n";
+        }
+
+        graphics.setText(displayedText);
     }
 }

@@ -1,6 +1,5 @@
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -15,15 +14,19 @@ import java.util.Collection;
 public class FlowModel
 {
     protected Project project;
-    protected AnActionEvent currentEvent;
+    protected Editor editor;
     protected ArrayList<FlowGuiElement> elements;
 
-    public FlowModel(AnActionEvent e)
+    public FlowModel(Project project)
     {
+        this.project = project;
         elements = new ArrayList<FlowGuiElement>();
-        currentEvent = e;
-        project = e.getData(PlatformDataKeys.PROJECT);
+        editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+    }
 
+    public void updateData()
+    {
+        elements.clear();
         PsiElement currentFunction = getCurrentFunction();
 
         if (currentFunction == null) {
@@ -40,8 +43,6 @@ public class FlowModel
 
     protected PsiElement getCurrentFunction()
     {
-        Editor editor = currentEvent.getData(PlatformDataKeys.EDITOR);
-
         if (editor == null) {
             return null;
         }
@@ -56,8 +57,8 @@ public class FlowModel
         return elements;
     }
 
-    public Project getProject()
+    public Editor getEditor()
     {
-        return project;
+        return editor;
     }
 }
