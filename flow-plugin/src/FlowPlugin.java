@@ -18,19 +18,21 @@ public class FlowPlugin implements ToolWindowFactory
     public void createToolWindowContent(Project project, ToolWindow toolWindow)
     {
         model = new FlowModel(project);
+        bindEvents();
+
+        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        Content content = contentFactory.createContent(contentPane, "", false);
+        toolWindow.getContentManager().addContent(content);
+    }
+
+    protected void bindEvents() {
         model.getEditor().getDocument().addDocumentListener(new DocumentListener() {
-            @Override
             public void beforeDocumentChange(DocumentEvent event) {}
-            @Override
             public void documentChanged(DocumentEvent event) {
                 model.updateData();
                 setContentText();
             }
         });
-
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(contentPane, "", false);
-        toolWindow.getContentManager().addContent(content);
     }
 
     protected void setContentText()
