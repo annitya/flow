@@ -1,0 +1,48 @@
+<idea-plugin version="2">
+  <id>com.yourcompany.unique.plugin.id</id>
+  <name>Flow</name>
+  <version>1.0</version>
+  <vendor email="henning.kvinnesland@gmail.com" url="http://www.google.no">No website yet.</vendor>
+
+  <description><![CDATA[
+      Displays a dynamic call-hierarchy, allowing you to focus on what really matters.
+      ]]></description>
+
+  <change-notes><![CDATA[
+      1.0 released.
+      ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="107.105"/>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+      <group id="flow-group" text="Flow" description="Enter the state of flow." popup="true">
+          <add-to-group group-id="ToolsMenu" anchor="last" />
+          <action id="flow-open" class="FlowPlugin" text="Start" description="Opens the flow diagram." />
+      </group>
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+
+  <depends>com.jetbrains.php</depends>
+  <depends>com.intellij.modules.platform</depends>
+
+</idea-plugin>
