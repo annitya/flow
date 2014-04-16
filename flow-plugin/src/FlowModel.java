@@ -8,6 +8,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.util.Query;
 import com.jetbrains.php.lang.psi.elements.Function;
+import com.jetbrains.php.lang.psi.elements.impl.MethodImpl;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,6 +18,8 @@ public class FlowModel
     protected Project project;
     protected Editor editor;
     protected ArrayList<FlowGuiElement> elements;
+    protected MethodImpl currentFunction;
+    protected boolean dirty = false;
 
     public FlowModel(Project project)
     {
@@ -27,9 +31,17 @@ public class FlowModel
     public void updateData()
     {
         elements.clear();
-        PsiElement currentFunction = getCurrentFunction();
 
-        if (currentFunction == null) {
+        MethodImpl focusedFunction = getCurrentFunction();
+        if (focusedFunction == null) {
+            return;
+        }
+
+        dirty = currentFunction != focusedFunction;
+        if (dirty) {
+            currentFunction = focusedFunction;
+        }
+        else {
             return;
         }
 
@@ -41,7 +53,7 @@ public class FlowModel
         }
     }
 
-    protected PsiElement getCurrentFunction()
+    protected MethodImpl getCurrentFunction()
     {
         if (editor == null) {
             return null;
@@ -49,7 +61,12 @@ public class FlowModel
 
         PsiElement cursorElement = PsiUtilBase.getElementAtCaret(editor);
 
-        return PsiTreeUtil.getParentOfType(cursorElement, Function.class);
+        return (MethodImpl)PsiTreeUtil.getParentOfType(cursorElement, Function.class);
+    }
+
+    public String getCurrentFunctionName()
+    {
+        return currentFunction.getName();
     }
 
     public Collection<FlowGuiElement> getElements()
@@ -61,4 +78,6 @@ public class FlowModel
     {
         return editor;
     }
+
+    public boolean isDirty() { return dirty; }
 }
