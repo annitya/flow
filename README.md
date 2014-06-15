@@ -3,11 +3,12 @@ flow
 
 A Intellij plugin
 
-Displays an interactive map of caller/callee-functions for your current context.
-Allows to focus on the one thing that matters: the code.
+Displays two interactive windows, one containing the selected caller-method's code, one containing the selected callee's code.
+Allows to focus on the one thing that matters: the code, and the flow of it.
 
 TODO:
 
+Allow the user to move between scopes.
 Validate the scope/performance of find-reference.
 Design/UX.
 Some unit-tests would be fun.
